@@ -1,11 +1,16 @@
 # apostrophe-redirects
 
+Allows admins to add redirects from one URL to another within an [Apostrophe site](http://github.com/punkave/apostrophe-sandbox).
+
 **Table of Contents**
+
 * [Installation](#installation)
+
 * [Configuration](#configuration)
+
 * [Usage](#usage)
 
-## <<a id="installation"></a> Installation
+## <a id="installation"></a> Installation
 
 First make sure you have an [Apostrophe project](http://github.com/punkave/apostrophe-sandbox)!
 
@@ -13,7 +18,7 @@ Then:
 
     npm install --save apostrophe-redirects
 
-## <<a id="installation"></a> Configuration
+## <a id="installation"></a> Configuration
 
 In `app.js`, add the module to your configuration:
 
@@ -26,7 +31,7 @@ Also, edit `outerLayout.html` so your admins can find the UI:
 
 That's it!
 
-## <<a id="usage"></a> Usage
+## <a id="usage"></a> Usage
 
 While logged in as an admin, click the "Redirects" button. A list of redirects appears, initially empty. Add as many redirects as you like. The "from" URL must begin with a `/`. The "to" URL may be anything and need not be on your site. The "notes" field is for your own convenience.
 
