@@ -1,0 +1,31 @@
+{% include "formMacros.html" %}
+
+<div class="apos-redirects-editor apos-modal apos-template">
+  <h3>
+    {% block title %}
+      Manage Redirects
+    {% endblock %}
+  </h3>
+  <div class="apos-modal-body">
+    <table data-list class="apos-redirects">
+      <thead>
+        <tr><th>From</th><th>To</th><th>Reason</th><th class="apos-actions">Actions</th></tr>
+        <tr data-item class="apos-redirect apos-template">
+          <td><input name="from" /></td>
+          <td><input name="to" /></td>
+          <td><input name="reason" /></td>
+          {# Do not use apos-save as that triggers a save on the whole dialog #}
+          <td class="apos-actions"><a href="#" class="apos-button apos-control apos-update" data-update>Save</a></td>
+          <td class="apos-actions"><a href="#" class="apos-button apos-control apos-remove" data-remove>Remove</a></td>
+        </tr>
+    </table>
+    <a href="#" data-new class="apos-button apos-control apos-new">New Redirect</a>
+  </div>
+  <div class="apos-modal-footer">
+    {% block additionalFooterItems %}
+    {% endblock %}
+    <div class="apos-modal-footer-buttons">
+      <a href="#" data-action="dismiss" class="apos-control apos-button apos-cancel">Done</a>
+    </div>
+  </div>
+</div>
