@@ -1,9 +1,41 @@
-.apos-redirects {
-  // Bare minimum to make it look usable out of the box
+.apos-redirects-editor
+{
+  width: 90%;
+
   td, th {
     padding: 5px;
     text-align: left;
   }
+  td{padding: 10px 5px;}
+  th {font-size: 14px;}
+
+  .apos-actions
+  {
+    width: 145px;
+    .apos-button
+    {
+      float: none;
+    }
+  }
+  table { width: 100%; }
+  input
+  {
+    padding: 10px;
+    width: 100%;
+  }
+
+  .apos-redirect:nth-child(even) { background-color: #eee; }
+
+  .apos-redirects-editor th,
+  .apos-redirects-editor td
+  {
+    text-align: left;
+  }
+}
+
+tr.apos-invalid
+{
+  background-color: red;
 }
 
 .apos-saveing
@@ -15,12 +47,12 @@
 
 @keyframes saveing
 {
-from {background-color: orange;}
-to {background-color: transparent;}
+  from {background-color: red;}
+  to {background-color: transparent;}
 }
 
 @-webkit-keyframes saveing /* Safari and Chrome */
 {
-from {background-color: orange;}
-to {background-color: transparent;}
+  from {background-color: red;}
+  to {background-color: transparent;}
 }
