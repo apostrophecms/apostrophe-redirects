@@ -1,31 +1,49 @@
 {% include "formMacros.html" %}
 
-<div class="apos-redirects-editor apos-modal apos-template">
+<div class="apos-redirects-editor apos-ui apos-modal apos-template">
   <h3>
     {% block title %}
       Manage Redirects
     {% endblock %}
   </h3>
-  <div class="apos-modal-body">
-    <table data-list class="apos-redirects">
-      <thead>
-        <tr><th>From</th><th>To</th><th>Reason</th><th class="apos-actions">Actions</th></tr>
-        <tr data-item class="apos-redirect apos-template">
-          <td><input name="from" /></td>
-          <td><input name="to" /></td>
-          <td><input name="reason" /></td>
-          {# Do not use apos-save as that triggers a save on the whole dialog #}
-          <td class="apos-actions"><a href="#" class="apos-button apos-control apos-update" data-update>Save</a></td>
-          <td class="apos-actions"><a href="#" class="apos-button apos-control apos-remove" data-remove>Remove</a></td>
-        </tr>
-    </table>
-    <a href="#" data-new class="apos-button apos-control apos-new">New Redirect</a>
-  </div>
-  <div class="apos-modal-footer">
-    {% block additionalFooterItems %}
-    {% endblock %}
-    <div class="apos-modal-footer-buttons">
-      <a href="#" data-action="dismiss" class="apos-control apos-button apos-cancel">Done</a>
+   <div class="apos-modal-body">
+    <div class="apos-modal-tabs">
+      <div class="apos-modal-tab-control">
+        <div class="apos-modal-tab-title apos-active" data-tab="basics">
+          <i class="icon-list"></i>
+          Redirects
+        </div>
+      </div>
+      <div class="headers">
+        <span>From</span>
+        <span>To</span>
+        <span>Reason</span>
+        <span>Actions</span>
+      </div>
+      <div class="apos-modal-tab apos-active" data-tab-id="basics" >
+        <div class="apos-modal-tab-content">
+          <table data-list class="apos-redirects">
+            <tr data-item class="apos-redirect apos-template">
+              <td><input name="from" /></td>
+              <td><input name="to" /></td>
+              <td><input name="reason" /></td>
+              {# Do not use apos-save as that triggers a save on the whole dialog #}
+              <td class="apos-actions">
+                <a href="#" class="apos-button apos-control apos-update" data-update>Save</a>
+                <a href="#" class="apos-button apos-control apos-remove" data-remove>Remove</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div> 
+    <div class="apos-modal-footer">
+      {% block additionalFooterItems %}
+      {% endblock %}
+      <div class="apos-modal-footer-buttons">
+        <a href="#" data-new class="apos-button apos-control apos-new">New Redirect</a>
+        <a href="#" data-action="dismiss" class="apos-control apos-button apos-cancel">Done</a>
+      </div>
     </div>
   </div>
 </div>
