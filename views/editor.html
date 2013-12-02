@@ -8,25 +8,25 @@
   </h3>
    <div class="apos-modal-body">
     <div class="apos-modal-tabs">
-      <div class="apos-modal-tab-control">
+<!--       <div class="apos-modal-tab-control">
         <div class="apos-modal-tab-title apos-active" data-tab="basics">
           <i class="icon-list"></i>
           Redirects
         </div>
-      </div>
-      <div class="headers">
-        <span>From</span>
-        <span>To</span>
-        <span>Reason</span>
-        <span>Actions</span>
+      </div> -->
+      <div class="apos-redirects-headers">
+        <span class="apos-redirects-headers-title">From</span>
+        <span class="apos-redirects-headers-title">To</span>
+        <span class="apos-redirects-headers-title">Reason</span>
+        <span class="apos-redirects-headers-title">Actions</span>
       </div>
       <div class="apos-modal-tab apos-active" data-tab-id="basics" >
         <div class="apos-modal-tab-content">
           <table data-list class="apos-redirects">
             <tr data-item class="apos-redirect apos-template">
-              <td><input name="from" /></td>
-              <td><input name="to" /></td>
-              <td><input name="reason" /></td>
+              <td class="apos-redirects-from"><input name="from" /></td>
+              <td class="apos-redirects-to"><input name="to" /></td>
+              <td class="apos-redirects-reason"><input name="reason" /></td>
               {# Do not use apos-save as that triggers a save on the whole dialog #}
               <td class="apos-actions">
                 <a href="#" class="apos-button apos-control apos-update" data-update>Save</a>

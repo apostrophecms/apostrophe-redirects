@@ -2,22 +2,28 @@
 {
   width: 90%;
 
+ &.apos-ui .apos-modal-tabs .apos-modal-tab
+  {
+    width: 100%;
+  }
   .apos-modal-tab-content
   {
     padding-top: 0px !important;
   }
-  .headers
+  .apos-redirects-headers
   {
-    padding-top: 30px;
-    margin-left: 286px;
-    padding-bottom: 10px;
-    span
+    // float: left;
+    // width: 80%;
+    // margin-left: 286px;
+    padding: 20px 40px 5px;
+    .apos-redirects-headers-title
     {
+      text-align: center;
       display: inline-block;
-      width: 235px;
+      width: 26%;
       &:last-child
       {
-        width: 100px;
+        width: 19%;
       }
     }
   }
@@ -29,9 +35,16 @@
   td{padding: 10px 5px;}
   th {font-size: 14px;}
 
+  .apos-redirects-from,
+  .apos-redirects-to,
+  .apos-redirects-reason
+  {
+    width: 27%;
+  }
   .apos-actions
   {
-    width: 145px;
+    width: 16%;
+    min-width: 145px;
     .apos-button
     {
       float: none;
