@@ -10,6 +10,10 @@ Allows admins to add redirects from one URL to another within an [Apostrophe sit
 
 * [Usage](#usage)
 
+### Code Stability
+
+0.4.x releases receive bug fixes only. For active development, follow 0.5.x releases and/or the master branch in github.
+
 ## <a id="installation"></a> Installation
 
 First make sure you have an [Apostrophe project](http://github.com/punkave/apostrophe-sandbox)!
