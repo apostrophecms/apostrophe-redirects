@@ -21,7 +21,7 @@
     "url": "https://github.com/punkave/apostrophe-redirects/issues"
   },
   "dependencies": {
-    "underscore": "~1.5.2",
+    "lodash": "2.4.x",
     "async": "~0.2.9",
     "extend": "~1.2.1"
   }
