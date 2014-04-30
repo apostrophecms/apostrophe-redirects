@@ -133,8 +133,6 @@ redirects.Construct = function(options, callback) {
     return result;
   });
 
-  self.serveAssets();
-
   if (callback) {
     // Invoke callback on next tick so that the constructor's return
     // value can be assigned to a variable in the same closure where
