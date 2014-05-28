@@ -57,7 +57,7 @@ redirects.Construct = function(options, callback) {
   }
 
   // Middleware to check for hard redirects before actual pages
-  self.middleware = function(req, res, next) {
+  self.pageMiddleware = function(req, res, next) {
     return self._apos.redirects.findOne({ from: req.params[0], hard: true }, function(err, redirect) {
       if (redirect) {
         return res.redirect(redirect.to);

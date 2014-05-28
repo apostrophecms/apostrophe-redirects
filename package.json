@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "lodash": "2.4.x",
-    "async": "~0.2.9",
+    "async": "0.8.x",
     "extend": "~1.2.1"
   }
 }
