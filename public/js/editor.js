@@ -49,8 +49,8 @@ function AposRedirects() {
             alert('An error occurred. Please try again.');
           } else {
             $item.attr('data-id', response.result._id);
-            $item.addClass('apos-saveing');
-            var t = setTimeout(function() {$item.removeClass('apos-saveing')}, 1000);
+            $item.addClass('apos-saving');
+            var t = setTimeout(function() {$item.removeClass('apos-saving')}, 1000);
           }
         });
       }
