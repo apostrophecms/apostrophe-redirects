@@ -9,18 +9,18 @@
 {% endblock%}
 
 {% block modalControls %} 
-  {{ renderProgressBtn({dataAttrs: 'data-new', float: 'right', color: 'base', label: 'New Redirect'}) }}
-  {{ renderProgressBtn({dataAttrs: 'data-cancel', float: 'left', arrow: 'left', label: 'Done'}) }}
+  {{ renderProgressBtn({dataAttrs: 'data-new', float: 'right', color: 'base', label: __('New Redirect')}) }}
+  {{ renderProgressBtn({dataAttrs: 'data-cancel', float: 'left', arrow: 'left', label: __('Done')}) }}
 {% endblock %}
 
 {% block modalBody %}
   <table class="apos-tags apos-manage-table">
     <tbody data-list class="apos-redirects">
       <tr>
-        <th>From</th>
-        <th>To</th>
-        <th>Reason</th>
-        <th>Actions</th>
+        <th>{{ __('From') }}</th>
+        <th>{{ __('To') }}</th>
+        <th>{{ __('Reason') }}</th>
+        <th>{{ __('Actions') }}</th>
       </tr>
       <tr data-item class="apos-redirect apos-template">
         <td class="apos-redirects-from"><input name="from" /></td>
@@ -28,8 +28,8 @@
         <td class="apos-redirects-reason"><input name="reason" /></td>
         {# Do not use apos-save as that triggers a save on the whole dialog #}
         <td class="apos-actions">
-          {{ renderProgressBtn({dataAttrs: 'data-update', float: 'left', color: 'base', label: 'Save'}) }}
-          {{ renderProgressBtn({dataAttrs: 'data-remove', float: 'left', color: 'base', label: 'Remove'}) }}
+          {{ renderProgressBtn({dataAttrs: 'data-update', float: 'left', color: 'base', label: __('Save')}) }}
+          {{ renderProgressBtn({dataAttrs: 'data-remove', float: 'left', color: 'base', label: __('Remove')}) }}
         </td>
       </tr>
     </tbody>
