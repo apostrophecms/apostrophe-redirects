@@ -1,3 +1,7 @@
+## Currently for 0.5.x projects only
+
+This module has not yet been ported to A2 2.x.
+
 # apostrophe-redirects
 
 Allows admins to add redirects from one URL to another within an [Apostrophe site](http://github.com/punkave/apostrophe-sandbox).
@@ -38,4 +42,3 @@ While logged in as an admin, click the "Redirects" button. A list of redirects a
 Be aware that each redirect is live as soon as you save it and that it is possible to make a mess with redirects. In a pinch, you can remove unwanted redirects via the MongoDB command line client (see the `aposRedirects` collection).
 
 Also be aware that Apostrophe already creates "soft redirects" every time you change the slug of a page. So you shouldn't need manually created "hard redirects" in that situation.
-
