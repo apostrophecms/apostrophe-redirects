@@ -1,10 +1,4 @@
-## Currently for 0.5.x projects only
-
-This module has not yet been ported to A2 2.x.
-
-# apostrophe-redirects
-
-Allows admins to add redirects from one URL to another within an [Apostrophe site](http://github.com/punkave/apostrophe-sandbox).
+This module allows admins to add redirects from one URL to another within an [Apostrophe site](http://apostrophecms.org/).
 
 **Table of Contents**
 
@@ -16,7 +10,7 @@ Allows admins to add redirects from one URL to another within an [Apostrophe sit
 
 ## <a id="installation"></a> Installation
 
-First make sure you have an [Apostrophe project](http://github.com/punkave/apostrophe-sandbox)!
+First make sure you have an [Apostrophe project](http://apostrophecms.org/)!
 
 Then:
 
@@ -28,10 +22,6 @@ In `app.js`, add the module to your configuration:
 
     ... other modules ...
     'apostrophe-redirects': { }
-
-Also, edit `outerLayout.html` so your admins can find the UI:
-
-    {{ aposRedirectsMenu({ edit: permissions.admin }) }}
 
 That's it!
 

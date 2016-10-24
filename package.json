@@ -1,6 +1,6 @@
 {
   "name": "apostrophe-redirects",
-  "version": "0.5.7",
+  "version": "0.6.0",
   "description": "Allows admins to create redirects within an Apostrophe site",
   "main": "index.js",
   "scripts": {
@@ -21,8 +21,5 @@
     "url": "https://github.com/punkave/apostrophe-redirects/issues"
   },
   "dependencies": {
-    "lodash": "2.4.x",
-    "async": "0.8.x",
-    "extend": "~1.2.1"
   }
 }
