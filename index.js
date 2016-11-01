@@ -10,10 +10,11 @@ module.exports = {
   addFields: [
     {
       name: 'redirectSlug',
-      type: 'slug',
+      // This is *not* type: 'slug' because we want to let you match any
+      // goldang nonsense the old site had in there, including mixed case
+      type: 'string',
       label: 'Old URL',
-      required: true,
-      page: true
+      required: true
     },
     {
       // contextual flag set so you don't see it in the editor; this gets updated
@@ -99,7 +100,8 @@ module.exports = {
     // ALL pages should check to see if a redirect exists
     var superPagesServe = pages.serve;
     pages.serve = function(req, res) {
-      var slug = req.params[0];
+      // req.url rather than req.params[0], lets us match query strings
+      var slug = req.url;
       return self.find(req, { slug: 'redirect-' + slug }, { 
         title: 1,
         slug: 1,
