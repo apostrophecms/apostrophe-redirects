@@ -114,7 +114,7 @@ module.exports = {
       }).toObject(function(err, result) {
         if(result) {
           if(result.urlType == 'internal' && result._newPage) {
-            return req.res.redirect(result._newPage._url);
+            return req.res.redirect(result._newPage.slug);
           } else if(result.urlType == 'external' && result.externalUrl.length) {
             return req.res.redirect(result.externalUrl);
           }
