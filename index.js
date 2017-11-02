@@ -14,7 +14,7 @@ module.exports = {
       // goldang nonsense the old site had in there, including mixed case
       type: 'string',
       label: 'Old URL',
-      help: 'Format with leading / such as /old-url'
+      help: 'Format with leading / such as /old-url',
       required: true
     },
     {
