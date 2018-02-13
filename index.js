@@ -31,7 +31,7 @@ module.exports = {
       label: 'Description',
       type: 'string',
       required: true
-    }, 
+    },
     {
       // contextual: true to hide this property
       type: 'boolean',
@@ -39,7 +39,7 @@ module.exports = {
       label: 'Published',
       required: true,
       def: true,
-      contextual: true      
+      contextual: true
     },
     {
       name: 'urlType',
@@ -49,20 +49,20 @@ module.exports = {
         { label: 'Internal Page', value: 'internal', showFields: [ '_newPage' ] },
         { label: 'External URL', value: 'external', showFields: [ 'externalUrl' ] }
       ]
-    },    
+    },
     {
       name: '_newPage',
       type: 'joinByOne',
       withType: 'apostrophe-page',
       label: 'Page Title',
-      idField: 'pageId', 
+      idField: 'pageId',
       filters: {
         projection: { slug: 1, title: 1 },
         // Admins set up redirects, so it's OK for non-admins to follow them anywhere
         // (they won't actually get access without logging in)
         permission: false
       }
-    }, 
+    },
     {
       name: 'externalUrl',
       label: 'URL',
@@ -79,16 +79,14 @@ module.exports = {
         'title',
         'urlType',
         '_newPage',
-        'externalUrl',
+        'externalUrl'
       ]
     }
   ],
 
-  construct: function(self, options) {
-    var pages = self.apos.pages;
-
-    self.beforeSave = function(req, doc, options, callback) {
-      //prefix the actual slug so it's not treated as a page
+  construct: function (self, options) {
+    self.beforeSave = function (req, doc, options, callback) {
+      // prefix the actual slug so it's not treated as a page
       doc.slug = 'redirect-' + doc.redirectSlug;
 
       if (!doc.title) {
@@ -98,12 +96,10 @@ module.exports = {
       return callback(null);
     };
 
-    // ALL pages should check to see if a redirect exists
-    var superPagesServe = pages.serve;
-    pages.serve = function(req, res) {
-      // req.url rather than req.params[0], lets us match query strings
+    // Check to see if a redirect exists before sending user on their way
+    self.expressMiddleware = function (req, res, next) {
       var slug = req.url;
-      return self.find(req, { slug: 'redirect-' + slug }, { 
+      return self.find(req, { slug: 'redirect-' + slug }, {
         title: 1,
         slug: 1,
         urlType: 1,
@@ -112,16 +108,19 @@ module.exports = {
         externalUrl: 1,
         redirectSlug: 1,
         _newPage: 1
-      }).toObject(function(err, result) {
-        if(result) {
-          if(result.urlType == 'internal' && result._newPage) {
+      }).toObject(function (err, result) {
+        if (err) {
+          console.log(err);
+        }
+        if (result) {
+          if (result.urlType === 'internal' && result._newPage) {
             return req.res.redirect(result._newPage.slug);
-          } else if(result.urlType == 'external' && result.externalUrl.length) {
+          } else if (result.urlType === 'external' && result.externalUrl.length) {
             return req.res.redirect(result.externalUrl);
           }
         }
-        return superPagesServe(req, res);
+        return next();
       });
     };
   }
-}
+};

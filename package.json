@@ -1,6 +1,6 @@
 {
   "name": "apostrophe-redirects",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "Allows admins to create redirects within an Apostrophe site",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,14 @@
   "bugs": {
     "url": "https://github.com/punkave/apostrophe-redirects/issues"
   },
-  "dependencies": {
+  "devDependencies": {
+    "eslint": "^4.2.0",
+    "eslint-config-punkave": "^1.0.8",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^7.1.0",
+    "eslint-plugin-standard": "^3.0.1"
   }
 }
