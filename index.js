@@ -79,14 +79,14 @@ module.exports = {
         'title',
         'urlType',
         '_newPage',
-        'externalUrl',
+        'externalUrl'
       ]
     }
   ],
 
-  construct: function(self, options) {
-    self.beforeSave = function(req, doc, options, callback) {
-      //prefix the actual slug so it's not treated as a page
+  construct: function (self, options) {
+    self.beforeSave = function (req, doc, options, callback) {
+      // prefix the actual slug so it's not treated as a page
       doc.slug = 'redirect-' + doc.redirectSlug;
 
       if (!doc.title) {
@@ -97,7 +97,7 @@ module.exports = {
     };
 
     // Check to see if a redirect exists before sending user on their way
-    self.expressMiddleware = function(req, res, next) {
+    self.expressMiddleware = function (req, res, next) {
       var slug = req.url;
       return self.find(req, { slug: 'redirect-' + slug }, {
         title: 1,
@@ -108,16 +108,19 @@ module.exports = {
         externalUrl: 1,
         redirectSlug: 1,
         _newPage: 1
-      }).toObject(function(err, result) {
-        if(result) {
-          if(result.urlType == 'internal' && result._newPage) {
+      }).toObject(function (err, result) {
+        if (err) {
+          console.log(err);
+        }
+        if (result) {
+          if (result.urlType === 'internal' && result._newPage) {
             return req.res.redirect(result._newPage.slug);
-          } else if(result.urlType == 'external' && result.externalUrl.length) {
+          } else if (result.urlType === 'external' && result.externalUrl.length) {
             return req.res.redirect(result.externalUrl);
           }
         }
         return next();
       });
-    }
+    };
   }
-}
+};
