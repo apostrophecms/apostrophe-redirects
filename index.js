@@ -6,7 +6,8 @@ module.exports = {
   pluralLabel: 'Redirects',
   searchable: false,
   adminOnly: true,
-
+  openGraph: false, // Disables apostrophe-open-graph for redirects
+  seo: false, // Disables apostrophe-seo for redirects
   addFields: [
     {
       name: 'redirectSlug',
