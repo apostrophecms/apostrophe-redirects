@@ -37,6 +37,8 @@ Also be aware that Apostrophe already creates "soft redirects" every time you ch
 
 ## Changelog
 
+0.6.6 Disables `apostrophe-seo` and `apostrophe-open-graph` for redirects to prevent superfluous UI tabs.
+
 0.6.5: Use express middleware instead of relying on `apos.pages.serve`. This lets redirects happen for files, etc.
 
 0.6.1: the `redirectSlug` should be `type: 'string'` because the old site may have allowed nonsense in slugs that we do not allow. Also compare to `req.url` so query string matches are allowed.
