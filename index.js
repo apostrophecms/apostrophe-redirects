@@ -129,7 +129,7 @@ module.exports = {
           var status = parseInt(result.statusCode);
 
           if (isNaN(status) || !status) {
-            status = '302';
+            status = 302;
           }
 
           if (result.urlType === 'internal' && result._newPage) {
