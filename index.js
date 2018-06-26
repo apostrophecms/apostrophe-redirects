@@ -67,6 +67,13 @@ module.exports = {
       name: 'externalUrl',
       label: 'URL',
       type: 'url'
+    },
+    {
+      name: 'permanent',
+      label: 'Permanent',
+      type: 'boolean',
+      def: false,
+      help: 'Test new redirects as temporary redirects first. Permanent redirects are an SEO best practice, but only if they are correct.'
     }
   ],
   removeFields: ['tags'],
@@ -79,7 +86,8 @@ module.exports = {
         'title',
         'urlType',
         '_newPage',
-        'externalUrl'
+        'externalUrl',
+        'permanent'
       ]
     }
   ],
@@ -107,16 +115,18 @@ module.exports = {
         type: 1,
         externalUrl: 1,
         redirectSlug: 1,
+        permanent: 1,
         _newPage: 1
       }).toObject(function (err, result) {
         if (err) {
           console.log(err);
         }
         if (result) {
+          var status = result.permanent ? 301 : 302;
           if (result.urlType === 'internal' && result._newPage) {
-            return req.res.redirect(result._newPage.slug);
+            return req.res.redirect(status, result._newPage.slug);
           } else if (result.urlType === 'external' && result.externalUrl.length) {
-            return req.res.redirect(result.externalUrl);
+            return req.res.redirect(status, result.externalUrl);
           }
         }
         return next();
