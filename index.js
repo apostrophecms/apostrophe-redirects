@@ -69,11 +69,15 @@ module.exports = {
       type: 'url'
     },
     {
-      name: 'permanent',
-      label: 'Permanent',
-      type: 'boolean',
-      def: false,
-      help: 'Test new redirects as temporary redirects first. Permanent redirects are an SEO best practice, but only if they are correct.'
+      name: 'statusCode',
+      label: 'Redirect Type',
+      type: 'select',
+      help: 'Test new redirects as temporary redirects first. Permanent redirects are an SEO best practice, but only if they are correct.',
+      choices: [
+        { label: 'Temporary', value: '302' },
+        { label: 'Permanent', value: '301' }
+      ],
+      def: '302'
     }
   ],
   removeFields: ['tags'],
@@ -87,7 +91,7 @@ module.exports = {
         'urlType',
         '_newPage',
         'externalUrl',
-        'permanent'
+        'statusCode'
       ]
     }
   ],
@@ -115,14 +119,19 @@ module.exports = {
         type: 1,
         externalUrl: 1,
         redirectSlug: 1,
-        permanent: 1,
+        statusCode: 1,
         _newPage: 1
       }).toObject(function (err, result) {
         if (err) {
           console.log(err);
         }
         if (result) {
-          var status = result.permanent ? 301 : 302;
+          var status = parseInt(result.statusCode);
+
+          if (isNaN(status) || !status) {
+            status = '302';
+          }
+
           if (result.urlType === 'internal' && result._newPage) {
             return req.res.redirect(status, result._newPage.slug);
           } else if (result.urlType === 'external' && result.externalUrl.length) {
