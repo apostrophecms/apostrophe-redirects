@@ -68,6 +68,16 @@ module.exports = {
       name: 'externalUrl',
       label: 'URL',
       type: 'url'
+    },
+    {
+      name: 'statusCode',
+      label: 'What type of redirect is this?',
+      type: 'select',
+      def: '302',
+      choices: [
+        { label: 'Permanent', value: '301' },
+        { label: 'Temporary', value: '302' }
+      ]
     }
   ],
   removeFields: ['tags'],
@@ -80,7 +90,8 @@ module.exports = {
         'title',
         'urlType',
         '_newPage',
-        'externalUrl'
+        'externalUrl',
+        'statusCode'
       ]
     }
   ],
@@ -99,6 +110,7 @@ module.exports = {
 
     // Check to see if a redirect exists before sending user on their way
     self.expressMiddleware = function (req, res, next) {
+      var statusCode = parseInt(req.statusCode) || 302;
       var slug = req.url;
       return self.find(req, { slug: 'redirect-' + slug }, {
         title: 1,
@@ -117,7 +129,7 @@ module.exports = {
           if (result.urlType === 'internal' && result._newPage) {
             return req.res.redirect(result._newPage.slug);
           } else if (result.urlType === 'external' && result.externalUrl.length) {
-            return req.res.redirect(result.externalUrl);
+            return req.res.redirect(statusCode, result.externalUrl);
           }
         }
         return next();
