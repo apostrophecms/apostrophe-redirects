@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 module.exports = {
   extend: 'apostrophe-pieces',
   name: 'apostrophe-redirect',
@@ -6,6 +8,9 @@ module.exports = {
   pluralLabel: 'Redirects',
   searchable: false,
   adminOnly: true,
+  // Default status code. Must be one of the valid choices
+  // for the `statusCode` select field
+  statusCode: 302,
   openGraph: false, // Disables apostrophe-open-graph for redirects
   seo: false, // Disables apostrophe-seo for redirects
   addFields: [
@@ -96,6 +101,17 @@ module.exports = {
       ]
     }
   ],
+
+  beforeConstruct: function(self, options) {
+    var field = _.find(options.addFields, { name: 'statusCode' });
+    if (!field) {
+      return;
+    }
+    field.def = options.statusCode.toString();
+    if (field.def === '301') {
+      field.help = 'By default, redirects are permanent and Google will cache them. Please proofread this carefully or test first with the "temporary" setting.';
+    }
+  },
 
   construct: function (self, options) {
     self.beforeSave = function (req, doc, options, callback) {

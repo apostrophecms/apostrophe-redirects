@@ -16,14 +16,29 @@ First make sure you have an [Apostrophe project](http://apostrophecms.org/)!
 
 Then:
 
-    npm install --save apostrophe-redirects
+```javascript
+npm install --save apostrophe-redirects
+```
 
 ## <a id="installation"></a> Configuration
 
 In `app.js`, add the module to your configuration:
 
-    ... other modules ...
-    'apostrophe-redirects': { }
+```javascript
+// Other modules, then...
+'apostrophe-redirects': { }
+```
+
+If you wish, you can change the default status code to `301` (permanent redirect):
+
+```javascript
+// Other modules, then...
+'apostrophe-redirects': { 
+  statusCode: 301
+}
+```
+
+> Note that permanent redirects are cached by Google for a long time. It is a good idea to encourage users to test with a temporary redirect first, then switch to permanent which is an SEO best practice — as long as it's correct.
 
 That's it!
 
@@ -37,7 +52,9 @@ Also be aware that Apostrophe already creates "soft redirects" every time you ch
 
 ## Changelog
 
-0.6.6 Disables `apostrophe-seo` and `apostrophe-open-graph` for redirects to prevent superfluous UI tabs.
+2.0.0: Implemented `statusCode` option and user-editable `statusCode` field allowing the user to choose a permanent or temporary redirect. For bc the default is still `302`. If the `statusCode` option is set to `301` instead, permanent redirects will be the default for *new* redirects. Existing redirects may be manually switched to `301` if desired.
+
+0.6.6: Disables `apostrophe-seo` and `apostrophe-open-graph` for redirects to prevent superfluous UI tabs.
 
 0.6.5: Use express middleware instead of relying on `apos.pages.serve`. This lets redirects happen for files, etc.
 

@@ -1,6 +1,6 @@
 {
   "name": "apostrophe-redirects",
-  "version": "0.6.6",
+  "version": "2.0.0",
   "description": "Allows admins to create redirects within an Apostrophe site",
   "main": "index.js",
   "scripts": {
@@ -29,5 +29,8 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-standard": "^3.0.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.10"
   }
 }
