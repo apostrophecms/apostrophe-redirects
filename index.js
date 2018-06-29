@@ -8,6 +8,10 @@ module.exports = {
   pluralLabel: 'Redirects',
   searchable: false,
   adminOnly: true,
+  // Default type being joined for internal redirects.
+  // Can be overwritten project level with an array of
+  // multiple piece types: ex: [ 'apostrophe-page', 'news', 'people' ]
+  withType: 'apostrophe-page',
   // Default status code. Must be one of the valid choices
   // for the `statusCode` select field
   statusCode: 302,
@@ -102,7 +106,10 @@ module.exports = {
     }
   ],
 
-  beforeConstruct: function(self, options) {
+  beforeConstruct: function (self, options) {
+    var _newPage = _.find(options.addFields, { name: '_newPage' });
+    _newPage.withType = options.withType;
+
     var field = _.find(options.addFields, { name: 'statusCode' });
     if (!field) {
       return;
