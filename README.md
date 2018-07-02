@@ -33,7 +33,7 @@ If you wish, you can change the default status code to `301` (permanent redirect
 
 ```javascript
 // Other modules, then...
-'apostrophe-redirects': { 
+'apostrophe-redirects': {
   statusCode: 301
 }
 ```
@@ -51,6 +51,8 @@ Be aware that each redirect is live as soon as you save it and that it is possib
 Also be aware that Apostrophe already creates "soft redirects" every time you change the slug of a page. So you shouldn't need manually created "hard redirects" in that situation.
 
 ## Changelog
+
+2.1.0 Disables `apostrophe-site-map` for redirects to prevent more superfluous UI tabs.
 
 2.0.0: Implemented `statusCode` option and user-editable `statusCode` field allowing the user to choose a permanent or temporary redirect. For bc the default is still `302`. If the `statusCode` option is set to `301` instead, permanent redirects will be the default for *new* redirects. Existing redirects may be manually switched to `301` if desired.
 
