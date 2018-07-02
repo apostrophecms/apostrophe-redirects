@@ -13,6 +13,7 @@ module.exports = {
   statusCode: 302,
   openGraph: false, // Disables apostrophe-open-graph for redirects
   seo: false, // Disables apostrophe-seo for redirects
+  sitemap: false, // Disables apostrophe-site-map for redirects
   addFields: [
     {
       name: 'redirectSlug',
