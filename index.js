@@ -67,7 +67,7 @@ module.exports = {
       label: 'Page Title',
       idField: 'pageId',
       filters: {
-        projection: { slug: 1, title: 1 },
+        projection: { slug: 1, title: 1, _url: 1 },
         // Admins set up redirects, so it's OK for non-admins to follow them anywhere
         // (they won't actually get access without logging in)
         permission: false
@@ -157,7 +157,7 @@ module.exports = {
           }
 
           if (result.urlType === 'internal' && result._newPage) {
-            return req.res.redirect(status, result._newPage.slug);
+            return req.res.redirect(status, result._newPage._url);
           } else if (result.urlType === 'external' && result.externalUrl.length) {
             return req.res.redirect(status, result.externalUrl);
           }
