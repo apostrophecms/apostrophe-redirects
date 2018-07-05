@@ -8,6 +8,10 @@ module.exports = {
   pluralLabel: 'Redirects',
   searchable: false,
   adminOnly: true,
+  // Default type being joined for internal redirects.
+  // Can be overwritten project level with an array of
+  // multiple piece types: ex: [ 'apostrophe-page', 'news', 'people' ]
+  withType: 'apostrophe-page',
   // Default status code. Must be one of the valid choices
   // for the `statusCode` select field
   statusCode: 302,
@@ -64,7 +68,7 @@ module.exports = {
       label: 'Page Title',
       idField: 'pageId',
       filters: {
-        projection: { slug: 1, title: 1 },
+        projection: { slug: 1, title: 1, _url: 1 },
         // Admins set up redirects, so it's OK for non-admins to follow them anywhere
         // (they won't actually get access without logging in)
         permission: false
@@ -103,7 +107,10 @@ module.exports = {
     }
   ],
 
-  beforeConstruct: function(self, options) {
+  beforeConstruct: function (self, options) {
+    var _newPage = _.find(options.addFields, { name: '_newPage' });
+    _newPage.withType = options.withType;
+
     var field = _.find(options.addFields, { name: 'statusCode' });
     if (!field) {
       return;
@@ -151,7 +158,7 @@ module.exports = {
           }
 
           if (result.urlType === 'internal' && result._newPage) {
-            return req.res.redirect(status, result._newPage.slug);
+            return req.res.redirect(status, result._newPage._url);
           } else if (result.urlType === 'external' && result.externalUrl.length) {
             return req.res.redirect(status, result.externalUrl);
           }
