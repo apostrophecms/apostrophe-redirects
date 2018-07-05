@@ -60,7 +60,7 @@ If you have pieces on your site and you would like to make a safer more persiste
 }
 ```
 
-Note: When adding your own pieces, you should always define `apostrophe-page` to still make it possible to redirect to any normal page. Also note that your piece is written in singular and that you must have a parked page for your piece. Refer to the core documentation for [reusable content with pieces](https://apostrophecms.org/docs/tutorials/getting-started/reusable-content-with-pieces.html#displaying-a-directory-of-people-on-a-page-with-code-apostrophe-pieces-pages-code).
+Note: When adding your own pieces, you should always define `apostrophe-page` to still make it possible to redirect to any normal page. Also note that your piece is written in singular and that you must have a suitable apostrophe-pieces-page for your piece (that is, it must have a `._url` property when Apostrophe fetches it). Refer to the core documentation for [reusable content with pieces](https://apostrophecms.org/docs/tutorials/getting-started/reusable-content-with-pieces.html#displaying-a-directory-of-people-on-a-page-with-code-apostrophe-pieces-pages-code).
 
 Now when you create a new redirect, you have the option to browse for both pages and your pieces in the Apostrophe admin UI.
 
