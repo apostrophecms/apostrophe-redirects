@@ -169,7 +169,7 @@ module.exports = {
             if (results.some(result => result.redirectSlug == slug)){
               target = results.find(result => result.redirectSlug == slug);
             } else if (results.some(result => result.redirectSlug == pathOnly && result.ignoreQuerystring)) {
-              target = results.find(result => result.redirectSlug == pathOnly);
+              target = results.find(result => result.redirectSlug == pathOnly && result.ignoreQuerystring);
             }
 
             if (target){
