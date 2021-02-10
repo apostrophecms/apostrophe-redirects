@@ -66,7 +66,7 @@ Now when you create a new redirect, you have the option to browse for both pages
 
 ## Changelog
 
-2.3.0: "Ignore query string" option for times when you'd like to match the URL regardless of the `?` and everything that folows it. Thanks to Shaun Hurley for the contribution.
+2.3.0: "Ignore query string" option for times when you'd like to match the URL regardless of the `?` and everything that follows it. Thanks to Shaun Hurley for the contribution.
 
 2.2.0: Implemented polymorphic joins for internal pages which also makes it possible to configure your own pieces for polymorphic joins.
 
