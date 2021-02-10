@@ -66,9 +66,11 @@ Now when you create a new redirect, you have the option to browse for both pages
 
 ## Changelog
 
-2.2.0 Implemented polymorphic joins for internal pages which also makes it possible to configure your own pieces for polymorphic joins.
+2.3.0: "Ignore query string" option for times when you'd like to match the URL regardless of the `?` and everything that folows it. Thanks to Shaun Hurley for the contribution.
 
-2.1.0 Disables `apostrophe-site-map` for redirects to prevent more superfluous UI tabs.
+2.2.0: Implemented polymorphic joins for internal pages which also makes it possible to configure your own pieces for polymorphic joins.
+
+2.1.0: Disables `apostrophe-site-map` for redirects to prevent more superfluous UI tabs.
 
 2.0.0: Implemented `statusCode` option and user-editable `statusCode` field allowing the user to choose a permanent or temporary redirect. For bc the default is still `302`. If the `statusCode` option is set to `301` instead, permanent redirects will be the default for *new* redirects. Existing redirects may be manually switched to `301` if desired.
 
