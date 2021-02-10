@@ -62,8 +62,8 @@ module.exports = {
       ]
     },
     {
-      name: 'ignoreQuerystring',
-      label: 'Ignore querystring when matching.',
+      name: 'ignoreQueryString',
+      label: 'Ignore query string when matching.',
       type: 'boolean',
       def: false
     },
@@ -106,7 +106,7 @@ module.exports = {
         'redirectSlug',
         'title',
         'urlType',
-        'ignoreQuerystring',
+        'ignoreQueryString',
         '_newPage',
         'externalUrl',
         'statusCode'
@@ -151,28 +151,28 @@ module.exports = {
           title: 1,
           slug: 1,
           urlType: 1,
-          ignoreQuerystring: 1,
+          ignoreQueryString: 1,
           pageId: 1,
           type: 1,
           externalUrl: 1,
           redirectSlug: 1,
           statusCode: 1,
           _newPage: 1
-        }).toArray(function(err, results){
+        }).toArray(function(err, results) {
           if (err) {
             console.log(err);
           }
 
           let target;
-          if (results){
+          if (results) {
 
-            if (results.some(result => result.redirectSlug == slug)){
+            if (results.some(result => result.redirectSlug == slug)) {
               target = results.find(result => result.redirectSlug == slug);
-            } else if (results.some(result => result.redirectSlug == pathOnly && result.ignoreQuerystring)) {
-              target = results.find(result => result.redirectSlug == pathOnly && result.ignoreQuerystring);
+            } else if (results.some(result => result.redirectSlug == pathOnly && result.ignoreQueryString)) {
+              target = results.find(result => result.redirectSlug == pathOnly && result.ignoreQueryString);
             }
 
-            if (target){
+            if (target) {
 
               let status = parseInt(target.statusCode);
 
