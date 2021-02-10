@@ -62,6 +62,12 @@ module.exports = {
       ]
     },
     {
+      name: 'ignoreQueryString',
+      label: 'Ignore query string when matching.',
+      type: 'boolean',
+      def: false
+    },
+    {
       name: '_newPage',
       type: 'joinByOne',
       withType: 'apostrophe-page',
@@ -100,6 +106,7 @@ module.exports = {
         'redirectSlug',
         'title',
         'urlType',
+        'ignoreQueryString',
         '_newPage',
         'externalUrl',
         'statusCode'
@@ -135,36 +142,55 @@ module.exports = {
 
     // Check to see if a redirect exists before sending user on their way
     self.expressMiddleware = function (req, res, next) {
-      var slug = req.url;
-      return self.find(req, { slug: 'redirect-' + slug }, {
-        title: 1,
-        slug: 1,
-        urlType: 1,
-        pageId: 1,
-        type: 1,
-        externalUrl: 1,
-        redirectSlug: 1,
-        statusCode: 1,
-        _newPage: 1
-      }).toObject(function (err, result) {
-        if (err) {
-          console.log(err);
-        }
-        if (result) {
-          var status = parseInt(result.statusCode);
 
-          if (isNaN(status) || !status) {
-            status = 302;
+      let slug = req.url;
+      let pathOnly = self.apos.utils.regExpQuote(slug.split('?')[0]);
+      let redirectRegEx = new RegExp(`redirect-${pathOnly}.*`);
+
+      let redirectResult = self.find(req, { slug: redirectRegEx }, {
+          title: 1,
+          slug: 1,
+          urlType: 1,
+          ignoreQueryString: 1,
+          pageId: 1,
+          type: 1,
+          externalUrl: 1,
+          redirectSlug: 1,
+          statusCode: 1,
+          _newPage: 1
+        }).toArray(function(err, results) {
+          if (err) {
+            console.log(err);
           }
 
-          if (result.urlType === 'internal' && result._newPage) {
-            return req.res.redirect(status, result._newPage._url);
-          } else if (result.urlType === 'external' && result.externalUrl.length) {
-            return req.res.redirect(status, result.externalUrl);
+          let target;
+          if (results) {
+
+            if (results.some(result => result.redirectSlug == slug)) {
+              target = results.find(result => result.redirectSlug == slug);
+            } else if (results.some(result => result.redirectSlug == pathOnly && result.ignoreQueryString)) {
+              target = results.find(result => result.redirectSlug == pathOnly && result.ignoreQueryString);
+            }
+
+            if (target) {
+
+              let status = parseInt(target.statusCode);
+
+              if (isNaN(status) || !status) {
+                status = 302;
+              }
+
+              if (target.urlType === 'internal' && target._newPage) {
+                return req.res.redirect(status, target._newPage._url);
+              } else if (target.urlType === 'external' && target.externalUrl.length) {
+                return req.res.redirect(status, target.externalUrl);
+              }
+            }
+
           }
-        }
-        return next();
-      });
+          return next();
+        });
+      
     };
   }
 };
