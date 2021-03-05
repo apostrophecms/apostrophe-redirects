@@ -145,7 +145,7 @@ module.exports = {
 
       let slug = req.url;
       let pathOnly = self.apos.utils.regExpQuote(slug.split('?')[0]);
-      let redirectRegEx = new RegExp(`redirect-${pathOnly}.*`);
+      let redirectRegEx = new RegExp(`redirect-${pathOnly}(\?.*)?`);
 
       let redirectResult = self.find(req, { slug: redirectRegEx }, {
           title: 1,
@@ -190,7 +190,7 @@ module.exports = {
           }
           return next();
         });
-      
+
     };
   }
 };
