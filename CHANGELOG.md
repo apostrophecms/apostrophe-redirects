@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.3.1
-Improves regex for "ignore query string" option to allow redirects from pages that are not slug-like such as those ending in `.html`.
+Improves regex for "ignore query string" option to allow redirects from pages that are not slug-like such as those ending in `.html`. Also fixes a regular expression bug introduced in 2.3.0 where a rule could match if any portion of it appeared in the URL.
 
 ## 2.3.0
 "Ignore query string" option for times when you'd like to match the URL regardless of the `?` and everything that follows it. Thanks to Shaun Hurley for the contribution.
