@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.2
+Corrects additional defects in query string handling that led to problems with the briefly released 2.3.1.
+
 ## 2.3.1
 Improves regex for "ignore query string" option to allow redirects from pages that are not slug-like such as those ending in `.html`. Also fixes a regular expression bug introduced in 2.3.0 where a rule could match if any portion of it appeared in the URL.
 

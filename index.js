@@ -144,8 +144,8 @@ module.exports = {
     self.expressMiddleware = function (req, res, next) {
 
       let slug = req.url;
-      let pathOnly = self.apos.utils.regExpQuote(slug.split('?')[0]);
-      let redirectRegEx = new RegExp(`^redirect-${pathOnly}(\\?.*)?$`);
+      let pathOnly = slug.split('?')[0];
+      let redirectRegEx = new RegExp(`^redirect-${self.apos.utils.regExpQuote(pathOnly)}(\\?.*)?$`);
 
       let redirectResult = self.find(req, { slug: redirectRegEx }, {
           title: 1,
