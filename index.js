@@ -141,13 +141,27 @@ module.exports = {
     };
 
     // Check to see if a redirect exists before sending user on their way
-    self.expressMiddleware = function (req, res, next) {
+    self.expressMiddleware = async (req, res, next) => {
 
       let slug = req.url;
       let pathOnly = slug.split('?')[0];
       let redirectRegEx = new RegExp(`^redirect-${self.apos.utils.regExpQuote(pathOnly)}(\\?.*)?$`);
 
-      let redirectResult = self.find(req, { slug: redirectRegEx }, {
+      try {
+        let results;
+        results = await self.apos.docs.db.find({
+          slug: redirectRegEx,
+          type: self.name,
+          trash: {
+            $ne: true
+          },
+          published: true,
+          workflowLocale: {
+            $not: {
+              $regex: /-draft$/
+            }
+          }
+        }).project({
           title: 1,
           slug: 1,
           urlType: 1,
@@ -157,40 +171,62 @@ module.exports = {
           externalUrl: 1,
           redirectSlug: 1,
           statusCode: 1,
-          _newPage: 1
-        }).toArray(function(err, results) {
-          if (err) {
-            console.log(err);
+          _newPage: 1,
+          workflowLocale: 1
+        }).toArray();
+        let target;
+        if (results) {
+          if (results.some(result => result.redirectSlug == slug)) {
+            target = results.find(result => result.redirectSlug == slug);
+          } else if (results.some(result => result.redirectSlug == pathOnly && result.ignoreQueryString)) {
+            target = results.find(result => result.redirectSlug == pathOnly && result.ignoreQueryString);
           }
-
-          let target;
-          if (results) {
-
-            if (results.some(result => result.redirectSlug == slug)) {
-              target = results.find(result => result.redirectSlug == slug);
-            } else if (results.some(result => result.redirectSlug == pathOnly && result.ignoreQueryString)) {
-              target = results.find(result => result.redirectSlug == pathOnly && result.ignoreQueryString);
+          if (target) {
+            let status = parseInt(target.statusCode);
+            if (isNaN(status) || !status) {
+              status = 302;
             }
-
-            if (target) {
-
-              let status = parseInt(target.statusCode);
-
-              if (isNaN(status) || !status) {
-                status = 302;
+            if (target.urlType === 'internal') {
+              const doc = await self.apos.docs.db.findOne({
+                _id: target.pageId,
+                trash: {
+                  $ne: true
+                },
+                published: true,
+                workflowLocale: {
+                  $not: {
+                    $regex: /-draft$/
+                  }
+                }
+              });
+              if (doc) {
+                const manager = self.apos.docs.getManager(doc.type);
+                if (!manager) {
+                  return next();
+                }
+                let oldLocale;
+                try {
+                  oldLocale = req.locale;
+                  req.locale = doc.workflowLocale;
+                  target._newPage = await manager.find(req, { _id: target.pageId }).toObject();
+                } finally {
+                  req.locale = oldLocale;
+                }
               }
-
-              if (target.urlType === 'internal' && target._newPage) {
-                return req.res.redirect(status, target._newPage._url);
-              } else if (target.urlType === 'external' && target.externalUrl.length) {
-                return req.res.redirect(status, target.externalUrl);
+              if (!target._newPage) {
+                return next();
               }
+              return req.res.redirect(status, target._newPage._url);
+            } else if (target.urlType === 'external' && target.externalUrl.length) {
+              return req.res.redirect(status, target.externalUrl);
             }
-
           }
-          return next();
-        });
-
+        }
+        return next();
+      } catch (e) {
+        self.apos.utils.error(e);
+        return next();
+      }
     };
   }
 };

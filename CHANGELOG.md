@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.0
+In the presence of workflow and locale prefixes, a redirect created in a different locale will now work if the URL matches, falling back to the redirect target's locale even if the user's current or default locale is different.
+
 ## 2.3.2
 Corrects additional defects in query string handling that led to problems with the briefly released 2.3.1.
 
