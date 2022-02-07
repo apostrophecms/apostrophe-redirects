@@ -1,0 +1,12 @@
+{%- import "apostrophe-schemas:macros.html" as schemas -%}
+
+{% macro crossLocale(field, options) %}
+  <input id="{{ options.id }}" name="{{ field.name }}" placeholder="{{__ns('apostrophe', placeholder | d(''))}}" class="apos-field-input apos-field-input-text{% if options.fieldClasses %} {{ options.fieldClasses }}{% endif %}" type="text" value="{{__ns('apostrophe', value | d(''))}}"{% if readOnly %} disabled{% endif %}{% if options.fieldAttributes %} {{ options.fieldAttributes }}{% endif %}>
+
+  <select name=""
+  <canvas width="256" height="256" class="color-picker-canvas" data-color-picker></canvas>
+  <div class="color-picker-preview" data-color-picker-preview></div>
+{% endmacro %}
+
+{# Wrap our content in a standard fieldset #}
+{{ schemas.fieldset(data, crossLocale) }}

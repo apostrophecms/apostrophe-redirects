@@ -18,6 +18,7 @@ module.exports = {
   openGraph: false, // Disables apostrophe-open-graph for redirects
   seo: false, // Disables apostrophe-seo for redirects
   sitemap: false, // Disables apostrophe-site-map for redirects
+  crossLocales: false,
   addFields: [
     {
       name: 'redirectSlug',
@@ -126,9 +127,64 @@ module.exports = {
     if (field.def === '301') {
       field.help = 'By default, redirects are permanent and Google will cache them. Please proofread this carefully or test first with the "temporary" setting.';
     }
+    if (options.crossLocales) {
+      options.addFields.push({
+        name: 'locale',
+        type: 'select',
+        // Patched later
+        choices: []
+      });
+    }
+  },
+
+  afterConstruct(self) {
+    self.addCrossLocaleFieldType();
   },
 
   construct: function (self, options) {
+    self.addCrossLocaleFieldType = () => {
+      self.crossLocaleFieldTypePartial = function(data) {
+        return self.partial('crossLocaleField', data);
+      };
+      self.pushAsset('script', 'crossLocaleUser', { when: 'user' });
+      self.pushAsset('stylesheet', 'crossLocaleUser', { when: 'user' });
+      self.apos.schemas.addFieldType({
+        name: 'cross-locale',
+        converters: {
+          async csv(req, data, name, object, field, callback) {
+            try {
+              const result = await body();
+              return callback(null, result);
+            } catch (e) {
+              return callback(e);
+            }
+            async function body() {
+              const _id = self.apos.launder.id(data[name]);
+              if (!_id) {
+                return null;
+              }
+              let doc = await self.apos.docs.db.findOne({
+                _id: data[name]
+              });
+              if (!doc) {
+                return null;
+              }
+              const locale = doc.workflowLocale;
+              let effectiveReq = locale ? req : {
+                ...req,
+                locale
+              };
+              object[name] = await self.apos.docs.find(req, {
+                _id
+              }).toObject();
+            }
+          },
+          form: 'csv'
+        },
+        partial: self.crossLocaleFieldTypePartial
+      });
+    };
+
     self.beforeSave = function (req, doc, options, callback) {
       // prefix the actual slug so it's not treated as a page
       doc.slug = 'redirect-' + doc.redirectSlug;
@@ -146,7 +202,6 @@ module.exports = {
       let slug = req.url;
       let pathOnly = slug.split('?')[0];
       let redirectRegEx = new RegExp(`^redirect-${self.apos.utils.regExpQuote(pathOnly)}(\\?.*)?$`);
-
       let redirectResult = self.find(req, { slug: redirectRegEx }, {
           title: 1,
           slug: 1,
@@ -159,6 +214,7 @@ module.exports = {
           statusCode: 1,
           _newPage: 1
         }).toArray(function(err, results) {
+          console.log(err, results);
           if (err) {
             console.log(err);
           }

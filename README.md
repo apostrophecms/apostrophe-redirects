@@ -40,7 +40,20 @@ If you wish, you can change the default status code to `301` (permanent redirect
 
 > Note that permanent redirects are cached by Google for a long time. It is a good idea to encourage users to test with a temporary redirect first, then switch to permanent which is an SEO best practice — as long as it's correct.
 
-That's it!
+**If you are using the workflow module with multiple locales,** we recommend turning on the new `crossLocales` option, which allows you to pick the locale for each redirect:
+
+```javascript
+'apostrophe-redirects': {
+  crossLocales: true
+}
+```
+
+If you are migrating existing redirects to `crossLocales: true`, you will need to run the following **one-time** command line task:
+
+```bash
+node app apostrophe-redirects:switch-to-cross-locales
+
+This transition cannot be undone.
 
 ## <a id="usage"></a> Usage
 
