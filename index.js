@@ -147,8 +147,7 @@ module.exports = {
       let redirectRegEx = new RegExp(`^redirect-${self.apos.utils.regExpQuote(pathOnly)}(\\?.*)?$`);
 
       try {
-        let results;
-        results = await self.apos.docs.db.find({
+        const results = await self.apos.docs.db.find({
           slug: redirectRegEx,
           type: self.name,
           trash: {
@@ -173,53 +172,49 @@ module.exports = {
           _newPage: 1,
           workflowLocale: 1
         }).toArray();
-        let target;
-        if (results) {
-          if (results.some(result => result.redirectSlug === slug)) {
-            target = results.find(result => result.redirectSlug === slug);
-          } else if (results.some(result => result.redirectSlug === pathOnly && result.ignoreQueryString)) {
-            target = results.find(result => result.redirectSlug === pathOnly && result.ignoreQueryString);
-          }
-          if (target) {
-            let status = parseInt(target.statusCode);
-            if (isNaN(status) || !status) {
-              status = 302;
+        const target = results &&
+          results.find(result => result.redirectSlug === slug) ||
+          results.find(result => result.redirectSlug === pathOnly && result.ignoreQueryString);
+        if (!target) {
+          return next();
+        }
+        let status = parseInt(target.statusCode);
+        if (isNaN(status) || !status) {
+          status = 302;
+        }
+        if (target.urlType === 'internal') {
+          const doc = await self.apos.docs.db.findOne({
+            _id: target.pageId,
+            trash: {
+              $ne: true
+            },
+            published: true,
+            workflowLocale: {
+              $not: {
+                $regex: /-draft$/
+              }
             }
-            if (target.urlType === 'internal') {
-              const doc = await self.apos.docs.db.findOne({
-                _id: target.pageId,
-                trash: {
-                  $ne: true
-                },
-                published: true,
-                workflowLocale: {
-                  $not: {
-                    $regex: /-draft$/
-                  }
-                }
-              });
-              if (doc) {
-                const manager = self.apos.docs.getManager(doc.type);
-                if (!manager) {
-                  return next();
-                }
-                let oldLocale;
-                try {
-                  oldLocale = req.locale;
-                  req.locale = doc.workflowLocale;
-                  target._newPage = await manager.find(req, { _id: target.pageId }).toObject();
-                } finally {
-                  req.locale = oldLocale;
-                }
-              }
-              if (!target._newPage) {
-                return next();
-              }
-              return req.res.redirect(status, target._newPage._url);
-            } else if (target.urlType === 'external' && target.externalUrl.length) {
-              return req.res.redirect(status, target.externalUrl);
+          });
+          if (doc) {
+            const manager = self.apos.docs.getManager(doc.type);
+            if (!manager) {
+              return next();
+            }
+            let oldLocale;
+            try {
+              oldLocale = req.locale;
+              req.locale = doc.workflowLocale;
+              target._newPage = await manager.find(req, { _id: target.pageId }).toObject();
+            } finally {
+              req.locale = oldLocale;
             }
           }
+          if (!target._newPage) {
+            return next();
+          }
+          return req.res.redirect(status, target._newPage._url);
+        } else if (target.urlType === 'external' && target.externalUrl.length) {
+          return req.res.redirect(status, target.externalUrl);
         }
         return next();
       } catch (e) {
