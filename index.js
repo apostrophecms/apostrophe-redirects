@@ -142,7 +142,6 @@ module.exports = {
 
     // Check to see if a redirect exists before sending user on their way
     self.expressMiddleware = async (req, res, next) => {
-
       let slug = req.url;
       let pathOnly = slug.split('?')[0];
       let redirectRegEx = new RegExp(`^redirect-${self.apos.utils.regExpQuote(pathOnly)}(\\?.*)?$`);
@@ -176,10 +175,10 @@ module.exports = {
         }).toArray();
         let target;
         if (results) {
-          if (results.some(result => result.redirectSlug == slug)) {
-            target = results.find(result => result.redirectSlug == slug);
-          } else if (results.some(result => result.redirectSlug == pathOnly && result.ignoreQueryString)) {
-            target = results.find(result => result.redirectSlug == pathOnly && result.ignoreQueryString);
+          if (results.some(result => result.redirectSlug === slug)) {
+            target = results.find(result => result.redirectSlug === slug);
+          } else if (results.some(result => result.redirectSlug === pathOnly && result.ignoreQueryString)) {
+            target = results.find(result => result.redirectSlug === pathOnly && result.ignoreQueryString);
           }
           if (target) {
             let status = parseInt(target.statusCode);
