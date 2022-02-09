@@ -1,6 +1,6 @@
 {
   "name": "apostrophe-redirects",
-  "version": "2.4.0-alpha.1",
+  "version": "2.4.0",
   "description": "Allows admins to create redirects within an Apostrophe site",
   "main": "index.js",
   "scripts": {
