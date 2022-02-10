@@ -146,6 +146,9 @@ module.exports = {
       let pathOnly = slug.split('?')[0];
       let redirectRegEx = new RegExp(`^redirect-${self.apos.utils.regExpQuote(pathOnly)}(\\?.*)?$`);
 
+      const workflow = self.apos.modules['apostrophe-workflow'];
+      const locales = Object.keys(workflow.locales).filter(locale => !locale.endsWith('-draft'));
+
       try {
         const results = await self.apos.docs.db.find({
           slug: redirectRegEx,
@@ -154,11 +157,18 @@ module.exports = {
             $ne: true
           },
           published: true,
-          workflowLocale: {
-            $not: {
-              $regex: /-draft$/
+          $or: [
+            {
+              workflowLocale: {
+                $in: locales
+              }
+            },
+            {
+              workflowLocale: {
+                $exists: 0
+              }
             }
-          }
+          ]
         }).project({
           title: 1,
           slug: 1,
@@ -183,17 +193,12 @@ module.exports = {
           status = 302;
         }
         if (target.urlType === 'internal') {
-          const workflow = self.apos.modules['apostrophe-workflow'];
-          const locales = Object.keys(workflow.locales).filter(locale => !locale.endsWith('-draft'));
           const doc = await self.apos.docs.db.findOne({
             _id: target.pageId,
             trash: {
               $ne: true
             },
             published: true,
-            // Either exempt from workflow, or in a valid published locale.
-            // We can't use $not with $regexp in earlier mongo versions
-            // supported for legacy A2 customers
             $or: [
               {
                 workflowLocale: {
