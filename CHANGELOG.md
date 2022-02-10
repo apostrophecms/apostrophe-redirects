@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.1
+Functionality introduced in 2.4.0 was not compatible with certain older versions of MongoDB. This has been addressed for legacy reasons. There is no change in the new functionality.
+
 ## 2.4.0
 In the presence of workflow and locale prefixes, a redirect created in a different locale will now work if the URL matches, falling back to the redirect target's locale even if the user's current or default locale is different.
 
