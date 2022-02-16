@@ -147,29 +147,33 @@ module.exports = {
       let redirectRegEx = new RegExp(`^redirect-${self.apos.utils.regExpQuote(pathOnly)}(\\?.*)?$`);
 
       const workflow = self.apos.modules['apostrophe-workflow'];
-      const locales = Object.keys(workflow.locales).filter(locale => !locale.endsWith('-draft'));
+      const locales = workflow && Object.keys(workflow.locales).filter(locale => !locale.endsWith('-draft'));
+      const $or = locales && [
+        {
+          workflowLocale: {
+            $in: locales
+          }
+        },
+        {
+          workflowLocale: {
+            $exists: 0
+          }
+        }
+      ];
 
       try {
-        const results = await self.apos.docs.db.find({
+        const criteria = {
           slug: redirectRegEx,
           type: self.name,
           trash: {
             $ne: true
           },
-          published: true,
-          $or: [
-            {
-              workflowLocale: {
-                $in: locales
-              }
-            },
-            {
-              workflowLocale: {
-                $exists: 0
-              }
-            }
-          ]
-        }).project({
+          published: true
+        };
+        if ($or) {
+          criteria.$or = $or;
+        }
+        const results = await self.apos.docs.db.find(criteria).project({
           title: 1,
           slug: 1,
           urlType: 1,
@@ -193,25 +197,17 @@ module.exports = {
           status = 302;
         }
         if (target.urlType === 'internal') {
-          const doc = await self.apos.docs.db.findOne({
+          const criteria = {
             _id: target.pageId,
             trash: {
               $ne: true
             },
-            published: true,
-            $or: [
-              {
-                workflowLocale: {
-                  $in: locales
-                }
-              },
-              {
-                workflowLocale: {
-                  $exists: 0
-                }
-              }
-            ]
-          });
+            published: true
+          };
+          if ($or) {
+            criteria.$or = $or;
+          }
+          const doc = await self.apos.docs.db.findOne(criteria);
           if (doc) {
             const manager = self.apos.docs.getManager(doc.type);
             if (!manager) {

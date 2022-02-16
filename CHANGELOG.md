@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.2
+Fixed incompatibility with sites **not** using workflow introduced in 2.4.1.
+
 ## 2.4.1
 Functionality introduced in 2.4.0 was not compatible with certain older versions of MongoDB. This has been addressed for legacy reasons. There is no change in the new functionality.
 
